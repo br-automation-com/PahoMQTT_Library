@@ -3,19 +3,15 @@ Eclipse Paho MQTT Client Library for B&amp;R SG4 targets
 
 ## Prerequisites
 
-To get started with Paho MQTT, please visit https://aws.amazon.com/iot-platform/getting-started/
-
-On the AWS Management Console, you can create a Thing that you connect your PLC to.
-
-Please read the getting started tutorial, that will guide you through the process.
+To get started with Paho MQTT, please visit http://www.eclipse.org/paho/
 
 For the B&amp;R Platform, you basically need
 
-- A MQTT broker, like mosquitoo
+- A MQTT broker on another system, like mosquitto
 - certficates (if desired)
 - The PahoMQTT Library
 
-## Preprarations
+## Preparations
 
 If you are using certificates for a secure connection, you make them avialable for your Controller under the filedevice "CERTS". Easiest way to do this, is to copy the folder with the certificates to the USER partition, and create a FileDevice "CERTS" under "F:\". Further, if you are accessing a host name rather than an IP-address, you need to enable the DNS service in the controller.
 
