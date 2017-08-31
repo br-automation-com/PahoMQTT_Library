@@ -1,6 +1,18 @@
 # PahoMQTT_Library
 Eclipse Paho MQTT Client Library for B&amp;R SG4 targets
 
+## Version Information
+This is a compiled library for B&R SG4 Targets using
+[https://github.com/eclipse/paho.mqtt.c](https://github.com/eclipse/paho.mqtt.c), Release version 1.2.0
+
+Versions / AR Support:
+
+- V4.26.x: Automation Runtime 4.26 
+
+It has been tested on following hardware / runtime:
+
+ - CP1586 / D4.26
+
 ## Prerequisites
 
 To get started with Paho MQTT, please visit http://www.eclipse.org/paho/
