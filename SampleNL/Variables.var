@@ -1,0 +1,7 @@
+VAR
+	PahoMQTT_Cyclic_0 : PahoMQTT_Cyclic;
+	Message : STRING[80] := 'Hello World!';
+	PahoMQTT_Init_0 : PahoMQTT_Init;
+	test : BOOL;
+	taskHandle1 : UDINT;
+END_VAR

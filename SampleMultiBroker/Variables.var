@@ -1,0 +1,10 @@
+VAR
+	PahoMQTT_Cyclic_1 : PahoMQTT_Cyclic;
+	PahoMQTT_Cyclic_0 : PahoMQTT_Cyclic;
+	Message2 : STRING[80] := 'Hello another World!';
+	Message1 : STRING[80] := 'Hello World!';
+	PahoMQTT_Init_1 : PahoMQTT_Init := (ThreadName:='PahoMQTT_2');
+	PahoMQTT_Init_0 : PahoMQTT_Init := (ThreadName:='PahoMQTT_1');
+	taskHandle2 : UDINT;
+	taskHandle1 : UDINT;
+END_VAR
