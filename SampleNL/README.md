@@ -13,16 +13,16 @@ You select the which thread to run via the <code>ProgramInit</code>, for example
 
 Some short information:
 
-###sample
-This is equivalent to the [Sample](/Sample/README.md) task, just publishing a "hello world" message. This one currently doesnt handle a lost connection.
+### sample
+This is equivalent to the [Sample](/Sample/) task, just publishing a "hello world" message. This one currently doesnt handle a lost connection.
 
-###secureSample
+### secureSample
 Here we have added SSL to the connection to a local broker. This one currently doesnt handle a lost connection.
 
-###secureSampleStayAlive
+### secureSampleStayAlive
 Same as above, but the client reconnects at a lost connection.
 
-###secureSampleTestServer
+### secureSampleTestServer
 Pretty much the same as the secureSampleStayAlive, but the connection is made to test.mosquitto.org instead. This is a useful test server and can be reached when the system is connected to the internet and DNS service is activated on the Controller.
 
 

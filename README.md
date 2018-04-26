@@ -68,9 +68,9 @@ Now you are ready to create your MQTT application task.
 
 In order to get started, insert one of the Sample tasks available here.
 
-- [Sample](Sample/README.md) : Very simple example, publishing a hello world message
-- [SampleNL](SampleNL/README.md) : Some more samples, with reconnecting at interruption, and SSL communication 
-- [SampleMultiBroker](SampleMultiBroker/README.md) : Example for starting up two clients connecting to two different brokers
+- [Sample](Sample/) : Very simple example, publishing a hello world message
+- [SampleNL](SampleNL/) : Some more samples, with reconnecting at interruption, and SSL communication 
+- [SampleMultiBroker](SampleMultiBroker/) : Example for starting up two clients connecting to two different brokers
 
 You select the folder as an existing program, basically starting up your client thread
 
