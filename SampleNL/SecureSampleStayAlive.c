@@ -39,7 +39,7 @@ void secureSampleStayAlive(unsigned long param)
    
     conn_opts.ssl = &ssl_opts;
 	
-	while(PahoMQTT_IsAlive(taskHandle1))
+	while(PahoMQTT_IsAlive())
 	{
     
 		if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS)
@@ -49,7 +49,7 @@ void secureSampleStayAlive(unsigned long param)
 		}
 		else
 		{
-			while(MQTTClient_isConnected( client ) && PahoMQTT_IsAlive(taskHandle1))
+			while(MQTTClient_isConnected( client ) && PahoMQTT_IsAlive())
 			{
 				pubmsg.payload      = PAYLOAD;
 				pubmsg.payloadlen   = strlen(PAYLOAD);

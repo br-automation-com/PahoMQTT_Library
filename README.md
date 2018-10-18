@@ -5,15 +5,22 @@ Eclipse Paho MQTT Client Library for B&amp;R SG4 targets
 This is a compiled library for B&R SG4 Targets using
 [https://github.com/eclipse/paho.mqtt.c](https://github.com/eclipse/paho.mqtt.c), Release version 1.2.0
 
+Encryption is based on openSSLv1.1.0f [https://github.com/openssl/openssl/releases/tag/OpenSSL_1_1_0f](https://github.com/openssl/openssl/releases/tag/OpenSSL_1_1_0f)
+
 Versions / AR Support:
 
-- V4.26.x: Automation Runtime 4.26 
-- v4.34.x; Automation Runtime 4.34, thanks to @JobFranken
+- V4.26.1: Automation Runtime 4.26 
+- V4.34.5: Automation Runtime 4.34, thanks to @JobFranken
+- V4.34.8: Automation Runtime 4.34
+	- Bugfix in openSSL for a filehandling problem that in some cases could lead to a pagefault when using certificates
+	- openSSL now uses its own Logger module OSSL_LOG for entering possible problems with TLS / Certificate handling
+	- Library supports multiple clients by static linking, in "normal" dynamic library mode, only one client instance is possible - the function blocks will return an error if you try something that isnt possible.
 
 It has been tested on following hardware / runtime:
 
  - CP1586 / D4.26
  - CP1586 / E4.34
+ - CP1586 / I4.34
  - CP0484 / E4.34
  
 ## Prerequisites
@@ -70,7 +77,7 @@ In order to get started, insert one of the Sample tasks available here.
 
 - [Sample](Sample/) : Very simple example, publishing a hello world message
 - [SampleNL](SampleNL/) : Some more samples, with reconnecting at interruption, and SSL communication 
-- [SampleMultiBroker](SampleMultiBroker/) : Example for starting up two clients connecting to two different brokers
+- [SampleParam](SampleParam/): Example that allows multiple client instances
 
 You select the folder as an existing program, basically starting up your client thread
 
@@ -90,10 +97,6 @@ You select the folder as an existing program, basically starting up your client 
 
 The sample itself needs to run as an asynchronous thread, which the Library has already taken into consideration. You therefore pass the function pointer to the sample program to the <code>MainThread</code> Input. If you want, you can also pass other arguments, such as a structure pointer using the <code>MainParam</code> input.
 
-In case you are going to run multiple MQTT client instances, you need to set the <code>ThreadName</code> to some unique name for each main thread you use. If you leave <code>ThreadName</code> unset, the main thread will run under the name "PahoMQTT_Main".
-
-	strncpy(PahoMQTT_Init_0.ThreadName, "MainNL", sizeof(PahoMQTT_Init_0.ThreadName)-1);
-
 If the sample task starts suspended using the <code>PahoMQTT_Init_0.SuspendThread</code>, you need to start the thread using the <code>PahoMQTT_Cyclic_0.Resume</code> input. The PahoMQTT_Exit is used to shutdown the AWS sample task and kill the thread when the program is redownloaded.
 
 	void _CYCLIC ProgramCyclic(void)
@@ -110,4 +113,54 @@ In this case the Logger is enabled using <code>PahoMQTT_Init_0.EnableLogger</cod
 
 When you have come this far, you should see the result in the Logger.
 ![](img/logger.PNG)
+
+## Using Multiple Clients (Static Linking) ##
+
+In **V4.34.8**, multiple clients are enabled by static linking of the Library. Static linking basically means that the complete PahoMQTT and openSSL is compiled into your task, instead of PahoMQTT exisiting as a standalone Library that you (dynamically) link to. With this, the PahoMQTT can run in several instances without interfering with the internal data resources it only has setup once in the library. The drawback are some extra settings and that the Task binaries will become bigger, as they include the complete libraries.
+
+If you follow the steps from above, what you need to change is the following:
+
+Change the PahoMQTT to be a Static Library in the Software Configuration
+
+![](img/lib_static.PNG)
+
+After this, you only need to add some extra linking to the Sample Task, as it now explicitly needs to know where to find all the functions that were made available through the dynamic library and exported functions. 
+
+You setup the Linker options by selecting Properties on the Task in the Software Configuration, or press ALT+Enter.
+![](img/task_properties.PNG)
+
+In the linker tab, add the Line
+
+	arsystem rtk_lib oSSLv110_s
+
+And for the directory, if you put PahoMQTT under Libraries, point to 
+
+	\Logical\Libraries\PahoMQTT\ar\IA32\
+
+For ARM targets (Compact-S / X90) point to  
+
+	\Logical\Libraries\PahoMQTT\ar\ARM\
+
+It should look like this
+
+![](img/linker_properties.PNG)
+
+Not that you need to do this for every task. But then again, you now have the possibility to run several clients on your system. 
+
+**Important Note**
+
+If you havent doen this already, you need to activate the c++ compiler and the dynamic heap managment for your task now that you are linking static, and it therefore is the task itself that defines the dynamic heap that is available for the PahoMQTT Library.
+
+If you omit this, you will get some undefined references to lseek, feoef, stat and so on.
+
+You activate the dynamic heap by adding a .cpp file, like `heapsize.cpp` to you task, and in the code you write
+
+![](img/heapsize.PNG)
+
+	unsigned long bur_heap_size = 1000000;
+
+This preallocates 1MB dynamic heap for this client instance. 
+
+
+
 

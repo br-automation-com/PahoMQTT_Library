@@ -46,7 +46,7 @@ void secureSample(unsigned long param)
     }
     else
     {
-        while(PahoMQTT_IsAlive(taskHandle1))
+        while(PahoMQTT_IsAlive())
         {
             pubmsg.payload      = PAYLOAD;
             pubmsg.payloadlen   = strlen(PAYLOAD);

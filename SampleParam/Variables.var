@@ -1,0 +1,5 @@
+VAR
+	loadTestCase : USINT;
+	PahoMQTT_Cyclic_0 : PahoMQTT_Cyclic;
+	PahoMQTT_Init_0 : PahoMQTT_Init;
+END_VAR
