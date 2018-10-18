@@ -25,7 +25,9 @@ It has been tested on following hardware / runtime:
  
 ## Prerequisites
 
-To get started with Paho MQTT, please visit http://www.eclipse.org/paho/
+To get started with Paho MQTT, please visit [http://www.eclipse.org/paho/](http://www.eclipse.org/paho/)
+
+For getting certificates up running on your mosquitto broker (in Linux), see [https://mosquitto.org/man/mosquitto-tls-7.html](https://mosquitto.org/man/mosquitto-tls-7.html)
 
 For the B&amp;R Platform, you basically need
 
