@@ -14,7 +14,10 @@ void param_init(param_typ* param)
 	param->conn_opts.keepAliveInterval = 10;
 	param->conn_opts.reliable = param->reliable;
     param->conn_opts.cleansession = param->clean;
-
+		
+	conn_opts.username = param->user;
+	conn_opts.password = param->password;
+				
 	if(!param->ip[0]) snprintf(param->ip, sizeof(param->ip)-1, "192.168.1.187");
 	
 	if(param->ssl)
@@ -26,27 +29,16 @@ void param_init(param_typ* param)
 		if(!param->message[0]) snprintf(param->message,sizeof(param->message)-1, "hello secure world!");
 		
 		param->ssl_opts.enableServerCertAuth = 0;
-		
-		if(param->login)
-		{
-		   	conn_opts.username = "user";
-		   	conn_opts.password = "user";
-			param->ssl_opts.enabledCipherSuites = "ALL";
-		}
-		else
-		{
-			param->ssl_opts.enabledCipherSuites = "aNULL";
-		}
-		
+		param->ssl_opts.enabledCipherSuites = "ALL";
+
 		if(param->certs)
 		{
-			
 			param->ssl_opts.trustStore = "ca.crt";
 			if(!param->certs_onlyroot)
 			{
 				param->ssl_opts.keyStore = "client.crt";
 				param->ssl_opts.privateKey = "client.key";
-				param->ssl_opts.privateKeyPassword = "user";
+				param->ssl_opts.privateKeyPassword = param->password;
 			}
 			
 		}
@@ -57,12 +49,7 @@ void param_init(param_typ* param)
 		if(!param->port) param->port = 1883;
 		snprintf(param->url,sizeof(param->url)-1,"tcp://%s:%d",param->ip,param->port);
 		if(!param->message[0]) snprintf(param->message,sizeof(param->message)-1, "hello world!");
-		
-		if(param->login)
-		{
-		   	conn_opts.username = "user";
-		   	conn_opts.password = "user";
-		}
+
 	}	
 	if(!param->timeout) param->timeout = 5000;
 	if(!param->sleep) param->sleep = 2000;
