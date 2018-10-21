@@ -15,6 +15,8 @@ Versions / AR Support:
 	- Bugfix in openSSL for a filehandling problem that in some cases could lead to a pagefault when using certificates
 	- openSSL now uses its own Logger module OSSL_LOG for entering possible problems with TLS / Certificate handling
 	- Library supports multiple clients by static linking, in "normal" dynamic library mode, only one client instance is possible - the function blocks will return an error if you try something that isnt possible.
+- V4.34.9: Automation Runtime 4.34
+	- Fixed openSSL error handling, which previously added entries in the logger that were not in fact errors. This has been corrected, and now only relevant errors are shown following the PahoSSL error.
 
 It has been tested on following hardware / runtime:
 
