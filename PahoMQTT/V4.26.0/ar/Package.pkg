@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<?AutomationStudio Version=4.2.7.54 SP?>
-<Package xmlns="http://br-automation.co.at/AS/Package">
-  <Objects>
-    <Object Type="File">logger.h</Object>
-  </Objects>
-</Package>

@@ -9,15 +9,16 @@ Encryption is based on openSSLv1.1.0f [https://github.com/openssl/openssl/releas
 
 Versions / AR Support:
 
-- V4.26.1: Automation Runtime 4.26 
-- V4.34.5: Automation Runtime 4.34, thanks to @JobFranken
-- V4.34.8: Automation Runtime 4.34
-	- Bugfix in openSSL for a filehandling problem that in some cases could lead to a pagefault when using certificates
-	- openSSL now uses its own Logger module OSSL_LOG for entering possible problems with TLS / Certificate handling
-	- Library supports multiple clients by static linking, in "normal" dynamic library mode, only one client instance is possible - the function blocks will return an error if you try something that isnt possible.
-- V4.34.9: Automation Runtime 4.34
-	- Fixed openSSL error handling, which previously added entries in the logger that were not in fact errors. This has been corrected, and now only relevant errors are shown following the PahoSSL error.
+This library is updated via a revision number, whereas the version number follows the Automation runtime version that it is compatible with. All revisions for certain version will have the format X.XX.0 in Automation Studio, as revision numbers cannot be part of the version number.
 
+The revision number (defined in <ar/logger.h> can be seen as the first entry in the logger.
+
+- V4.26.0-rev.10: Automation Runtime 4.26 
+- V4.34.0-rev.10: Automation Runtime 4.34
+	- Library supports multiple clients by static linking, in "normal" dynamic library mode, only one client instance is possible - the function blocks will return an error if you try something that isnt possible.
+	- Fixed openSSL error handling, which previously added entries in the logger that were not in fact errors. This has been corrected, and now only relevant errors are shown following the PahoSSL error.
+	- Small memory leak fixed inside openSSL that ate some 50-100 bytes when trying to open a certificate that was not on the system.
+ 
 It has been tested on following hardware / runtime:
 
  - CP1586 / D4.26

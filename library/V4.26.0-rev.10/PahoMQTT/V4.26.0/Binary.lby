@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio Version=4.3.7.46 SP?>
+<Library Version="4.26.0" xmlns="http://br-automation.co.at/AS/Library">
+  <Objects>
+    <Object Type="File" Description="Exported data types">Types.typ</Object>
+    <Object Type="File" Description="Exported constants">Constants.var</Object>
+    <Object Type="File" Description="Exported functions and function blocks">PahoMQTT.fun</Object>
+    <Object Type="File">Clients.h</Object>
+    <Object Type="File">Heap.h</Object>
+    <Object Type="File">LinkedList.h</Object>
+    <Object Type="File">Log.h</Object>
+    <Object Type="File">Messages.h</Object>
+    <Object Type="File">MQTTClient.h</Object>
+    <Object Type="File">MQTTClientPersistence.h</Object>
+    <Object Type="File">MQTTPacket.h</Object>
+    <Object Type="File">MQTTPacketOut.h</Object>
+    <Object Type="File">MQTTPersistence.h</Object>
+    <Object Type="File">MQTTPersistenceDefault.h</Object>
+    <Object Type="File">MQTTProtocol.h</Object>
+    <Object Type="File">MQTTProtocolClient.h</Object>
+    <Object Type="File">MQTTProtocolOut.h</Object>
+    <Object Type="File">Socket.h</Object>
+    <Object Type="File">SocketBuffer.h</Object>
+    <Object Type="File">SSLSocket.h</Object>
+    <Object Type="File">StackTrace.h</Object>
+    <Object Type="File">Thread.h</Object>
+    <Object Type="File">Tree.h</Object>
+    <Object Type="File">utf-8.h</Object>
+    <Object Type="File">VersionInfo.h</Object>
+    <Object Type="Package">ar</Object>
+  </Objects>
+  <Dependencies>
+    <Dependency ObjectName="ArEventLog" />
+    <Dependency ObjectName="AsIecCon" />
+    <Dependency ObjectName="sys_lib" />
+    <Dependency ObjectName="AsHW" />
+    <Dependency ObjectName="AsETH" />
+    <Dependency ObjectName="FileIO" />
+    <Dependency ObjectName="AsHost" />
+    <Dependency ObjectName="astime" FromVersion="0.00.0" />
+  </Dependencies>
+</Library>
