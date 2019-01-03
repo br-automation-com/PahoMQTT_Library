@@ -24,6 +24,7 @@ void _INIT ProgramInit(void)
 
 void _CYCLIC ProgramCyclic(void)
 {
+	PahoMQTT_Cyclic_0.Reset = Param.restart;
 	PahoMQTT_Cyclic(&PahoMQTT_Cyclic_0);
 	
 	switch(loadTestCase)

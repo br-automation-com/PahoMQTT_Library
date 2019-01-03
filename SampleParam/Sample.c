@@ -33,7 +33,7 @@ void sample(unsigned long param_adr)
 		int rc;
 		MQTTClient_create(&client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
 		   
-		while(PahoMQTT_IsAlive() && !param->restart)
+		while(PahoMQTT_IsAlive())
 		{
 		   
 			if ((rc = MQTTClient_connect(client, &param->conn_opts)) != MQTTCLIENT_SUCCESS)
@@ -43,7 +43,7 @@ void sample(unsigned long param_adr)
 			}
 			else
 			{
-				while(MQTTClient_isConnected(client) && PahoMQTT_IsAlive() && !param->restart)
+				while(MQTTClient_isConnected(client) && PahoMQTT_IsAlive())
 				{
 					pubmsg.payload      = PAYLOAD;
 					pubmsg.payloadlen   = strlen(PAYLOAD);
@@ -63,5 +63,6 @@ void sample(unsigned long param_adr)
 		}
 		MQTTClient_disconnect(client, TIMEOUT);
 		MQTTClient_destroy(&client);
-	} while(param->restart);
+	
+	} while(PahoMQTT_IsReset());
 }
