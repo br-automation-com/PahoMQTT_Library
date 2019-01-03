@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio Version=4.4.6.71 SP?>
+<Package xmlns="http://br-automation.co.at/AS/Package">
+  <Objects>
+    <Object Type="File">libarsystem.a</Object>
+    <Object Type="File">librtk_lib.a</Object>
+    <Object Type="File">liboSSLv110_s.a</Object>
+  </Objects>
+</Package>

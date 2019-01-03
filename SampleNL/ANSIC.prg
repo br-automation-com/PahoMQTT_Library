@@ -7,6 +7,7 @@
     <File>SecureSample.c</File>
     <File>SecureSampleStayAlive.c</File>
     <File>SecureSampleTestServer.c</File>
+    <File>SecureSampleSubscribe.c</File>
     <File Description="Local variables" Private="true">Variables.var</File>
     <File>heapsize.cpp</File>
   </Files>

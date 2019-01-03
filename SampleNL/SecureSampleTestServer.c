@@ -19,51 +19,55 @@ void secureSampleTestServer(unsigned long param)
 {
 	char *message = (char *)param;
     
-	MQTTClient client;
-	MQTTClient_init_options testsss = MQTTClient_init_options_initializer ; 
-	MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
-	MQTTClient_message pubmsg = MQTTClient_message_initializer;
-	MQTTClient_deliveryToken token;
-	MQTTClient_SSLOptions ssl_opts = MQTTClient_SSLOptions_initializer;
-	int rc = 0;
-    
-	testsss.do_openssl_init = 1 ;
-//	MQTTClient_global_init(&testsss);
-		
-	rc = MQTTClient_create(&client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
-    
-	conn_opts.keepAliveInterval = 20;
-	conn_opts.reliable = 0;
-	conn_opts.cleansession = 1;
-	//conn_opts.username = "BuR";
-	//conn_opts.password = "BuR";
-	ssl_opts.enableServerCertAuth = 0;
-   
-    
-	conn_opts.ssl = &ssl_opts;
-    
-	if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS)
+	do
 	{
-		ArPahoLogError("Failed to connect, return code %d\n", rc);
-	}
-	else
-	{
-		while(PahoMQTT_IsAlive())
+		MQTTClient client;
+		MQTTClient_init_options testsss = MQTTClient_init_options_initializer ; 
+		MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
+		MQTTClient_message pubmsg = MQTTClient_message_initializer;
+		MQTTClient_deliveryToken token;
+		MQTTClient_SSLOptions ssl_opts = MQTTClient_SSLOptions_initializer;
+		int rc = 0;
+	    
+		testsss.do_openssl_init = 1 ;
+		//	MQTTClient_global_init(&testsss);
+			
+		rc = MQTTClient_create(&client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+	    
+		conn_opts.keepAliveInterval = 20;
+		conn_opts.reliable = 0;
+		conn_opts.cleansession = 1;
+		//conn_opts.username = "BuR";
+		//conn_opts.password = "BuR";
+		ssl_opts.enableServerCertAuth = 0;
+	   
+	    
+		conn_opts.ssl = &ssl_opts;
+	    
+		if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS)
 		{
-			pubmsg.payload      = PAYLOAD;
-			pubmsg.payloadlen   = strlen(PAYLOAD);
-			pubmsg.qos          = QOS;
-			pubmsg.retained     = 0;
-			MQTTClient_publishMessage(client, TOPIC, &pubmsg, &token);
-			ArPahoLogInfo("Waiting for up to %d seconds for publication of %s\n"
-				"on topic %s for client with ClientID: %s\n",
-				(int)(TIMEOUT/1000), PAYLOAD, TOPIC, CLIENTID);
-			rc = MQTTClient_waitForCompletion(client, token, TIMEOUT);
-			ArPahoLogSuccess("Message with delivery token %d delivered\n", token);
-		
-			PahoMQTT_Sleep(5000);
+			ArPahoLogError("Failed to connect, return code %d\n", rc);
 		}
-	}
-	MQTTClient_disconnect(client, 10000);
-	MQTTClient_destroy(&client);
+		else
+		{
+			while(PahoMQTT_IsAlive())
+			{
+				pubmsg.payload      = PAYLOAD;
+				pubmsg.payloadlen   = strlen(PAYLOAD);
+				pubmsg.qos          = QOS;
+				pubmsg.retained     = 0;
+				MQTTClient_publishMessage(client, TOPIC, &pubmsg, &token);
+				ArPahoLogInfo("Waiting for up to %d seconds for publication of %s\n"
+					"on topic %s for client with ClientID: %s\n",
+					(int)(TIMEOUT/1000), PAYLOAD, TOPIC, CLIENTID);
+				rc = MQTTClient_waitForCompletion(client, token, TIMEOUT);
+				ArPahoLogSuccess("Message with delivery token %d delivered\n", token);
+			
+				PahoMQTT_Sleep(5000);
+			}
+		}
+		MQTTClient_disconnect(client, 10000);
+		MQTTClient_destroy(&client);
+		
+	} while(PahoMQTT_IsReset());
 }

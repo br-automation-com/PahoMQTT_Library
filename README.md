@@ -13,19 +13,25 @@ This library is updated via a revision number, whereas the version number follow
 
 The revision number (defined in <ar/logger.h> can be seen as the first entry in the logger.
 
+- V4.34.0-rev.11: Automation Runtime 4.34
+- V4.45.0-rev.11: Automation Runtime 4.45
+	- Added Reset functionality in order to connect to another thing during runtime
+	- V4.45.0 is only avialable as static library for ARM targets, see "Using Multiple Clients (Static Linking)"
+	- Initialization of threads was not made automatically in previous versions. With this static linking of multiple clients had the potential problem of colliding resources. This is fixed by automatic initialization.
 - V4.26.0-rev.10: Automation Runtime 4.26 
 - V4.34.0-rev.10: Automation Runtime 4.34
 	- Library supports multiple clients by static linking, in "normal" dynamic library mode, only one client instance is possible - the function blocks will return an error if you try something that isnt possible.
 	- Fixed openSSL error handling, which previously added entries in the logger that were not in fact errors. This has been corrected, and now only relevant errors are shown following the PahoSSL error.
 	- Small memory leak fixed inside openSSL that ate some 50-100 bytes when trying to open a certificate that was not on the system.
- 
+
 It has been tested on following hardware / runtime:
 
  - CP1586 / D4.26
  - CP1586 / E4.34
  - CP1586 / I4.34
  - CP0484 / E4.34
- 
+ - CP1586 / B4.45
+ - CP0484 / B4.45
 ## Prerequisites
 
 To get started with Paho MQTT, please visit [http://www.eclipse.org/paho/](http://www.eclipse.org/paho/)
@@ -102,7 +108,7 @@ You select the folder as an existing program, basically starting up your client 
 
 The sample itself needs to run as an asynchronous thread, which the Library has already taken into consideration. You therefore pass the function pointer to the sample program to the <code>MainThread</code> Input. If you want, you can also pass other arguments, such as a structure pointer using the <code>MainParam</code> input.
 
-If the sample task starts suspended using the <code>PahoMQTT_Init_0.SuspendThread</code>, you need to start the thread using the <code>PahoMQTT_Cyclic_0.Resume</code> input. The PahoMQTT_Exit is used to shutdown the AWS sample task and kill the thread when the program is redownloaded.
+If the sample task starts suspended using the <code>PahoMQTT_Init_0.SuspendThread</code>, you need to start the thread using the <code>PahoMQTT_Cyclic_0.Resume</code> input. The <code>PahoMQTT_Exit()</code> is used to shutdown the AWS sample task and kill the thread when the program is redownloaded. If you want to reset the connection from the asynchronous thread, you can use <code>PahoMQTT_Init_0.Reset</code> and <code>PahoMQTT_IsReset()</code>. For more info on this, see "Resetting the Connection".
 
 	void _CYCLIC ProgramCyclic(void)
 	{
@@ -121,7 +127,7 @@ When you have come this far, you should see the result in the Logger.
 
 ## Using Multiple Clients (Static Linking) ##
 
-In **V4.34.8**, multiple clients are enabled by static linking of the Library. Static linking basically means that the complete PahoMQTT and openSSL is compiled into your task, instead of PahoMQTT exisiting as a standalone Library that you (dynamically) link to. With this, the PahoMQTT can run in several instances without interfering with the internal data resources it only has setup once in the library. The drawback are some extra settings and that the Task binaries will become bigger, as they include the complete libraries.
+In **V4.34.8 / V4.xx.0 Revision 10**, multiple clients are enabled by static linking of the Library. Static linking basically means that the complete PahoMQTT and openSSL is compiled into your task, instead of PahoMQTT exisiting as a standalone Library that you (dynamically) link to. With this, the PahoMQTT can run in several instances without interfering with the internal data resources it only has setup once in the library. The drawback are some extra settings and that the Task binaries will become bigger, as they include the complete libraries.
 
 If you follow the steps from above, what you need to change is the following:
 
@@ -166,6 +172,39 @@ You activate the dynamic heap by adding a .cpp file, like `heapsize.cpp` to you 
 
 This preallocates 1MB dynamic heap for this client instance. 
 
+### Resetting the Connection
+
+With Revision 11, theres a new function to reset or change your connection to another thing. You do this with `PahoMQTT_IsReset()` in your MainThread and `PahoMQTT_Cyclic_0.Reset` in the _CYCLIC program.
+
+It is important to mention, that `PahoMQTT_IsAlive()` will go low until `PahoMQTT_IsReset()` is called, to fall out of the inner loops. That means, if you do not call the `PahoMQTT_IsReset()` at the end of the loop, and you make an `PahoMQTT_Cyclic_0.Reset`, the client will simply disconnect and fall out of the mainthread. 
+
+The sample program in this repository already has this additional `do{ ... }while(PahoMQTT_IsReset());`  in the code, but heres where to put it
+
+**Sample.c:**
+
+	void sample(unsigned long param)
+	{
+		char *message = (char *)param;
+
+		do //here!
+		{  //here!
+
+			MQTTClient client;
+			MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;	
+			...
+	
+					PahoMQTT_Sleep(5000);
+				}
+		    
+			}
+			MQTTClient_disconnect(client, 10000);
+			MQTTClient_destroy(&client);
+			
+		} while(PahoMQTT_IsReset()); //and here!
+
+	}
+
+The [SampleParam](SampleParam/) has this functionality builtin, which lets you reconnect and change broker.
 
 
 
