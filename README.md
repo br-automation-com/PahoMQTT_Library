@@ -13,6 +13,7 @@ This library is updated via a revision number, whereas the version number follow
 
 The revision number (defined in <ar/logger.h> can be seen as the first entry in the logger.
 
+- V4.26.0-rev.11: Automation Runtime 4.26 
 - V4.34.0-rev.11: Automation Runtime 4.34
 - V4.45.0-rev.11: Automation Runtime 4.45
 	- Added Reset functionality in order to connect to another thing during runtime
