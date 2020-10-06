@@ -1,6 +1,8 @@
 # PahoMQTT_Library
 Eclipse Paho MQTT Client Library for B&amp;R SG4 targets
 
+The PahoMQTT Library has a new repository, with a proper Function Block interface for a much simpler usage of publish subscribe functionality, its found under [https://github.com/br-automation-com/paho.mqtt.c-ar](https://github.com/br-automation-com/paho.mqtt.c-ar). This version is based on the newest paho and openssl and offers a compatible changeover for applications using PahoMQTT today (whereas our recommendation is that you change your application to using the function block library instead of the PahoMQTT C-API).
+
 ## Version Information
 This is a compiled library for B&R SG4 Targets using
 [https://github.com/eclipse/paho.mqtt.c](https://github.com/eclipse/paho.mqtt.c), Release version 1.2.0
